@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajax</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <ul id="livros-lista">
+        <li>teste</li>
+    </ul>
+    <br>
+    <button onclick="carregarlivros()">Carregar Livros</button>
+</body>
+
+<script>
+    livros_usuario = [
+        {
+            imgCapa: 'https://s3.novatec.com.br/capas/9788575225462.jpg',
+            categoria: 'teste',
+            titulo: 'Aventuras de Paulin'
+        }
+    ]
+
+    $(document).ready(function () {
+        carregarlivros();
+    });
+
+    function carregarlivros() {
+        $.ajax({
+            url: 'https://my-json-server.typicode.com/maujor/livros-json/db',
+            method: 'GET'
+        })
+            .done(function (response) {
+                console.log(response.livros)
+                const listalivros = $('#livros-lista');
+
+                response.livros.forEach(livro => {
+                    listalivros.append(`<li>${livro.titulo}</li>`);
+                    livros_usuario.push(livro)
+                });
+            })
+            .fail(function (error) {
+                console.error('Erro ao obter livros:', error);
+            });
+    }
+</script>
+
+</html>
